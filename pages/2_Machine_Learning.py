@@ -8,7 +8,9 @@ from default.read_defaults import *
 with st.sidebar:
     splitPercent = st.slider('Chose percentage of data for test', 0, 100, 20)/100
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['General', 'Decision tree', 'Naive Bayes', 'Random forest', 'Logistic regression', 'SVM'])
+    st.write('Type and how much augumentation - to be added')
+
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(['General', 'Decision tree', 'Naive Bayes', 'Random forest', 'Logistic regression', 'SVM', 'Machine learning on PCA'])
 selectedColumns = {}
 
 for c in data_basic.columns:
@@ -136,3 +138,6 @@ with tab6:
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
         st.pyplot(fig1)
+
+with tab7:
+    st.write('Take two main components so data can be visualised on scatterplot and where it would be divided.')
