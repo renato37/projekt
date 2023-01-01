@@ -5,10 +5,11 @@ import math
 import researchpy as rp
 from default.read_defaults import *
 import numpy as np
+from sklearn.decomposition import PCA
 
 y_basic = data_basic['target']
 
-tab1, tab2, tab3 = st.tabs(["T-test", "Boxplot", "Scatterplot"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["T-test", "Boxplot", "Scatterplot", "PCA", "Augumentation"])
 selectedColumns = {}
 
 for c in data_basic.columns:
@@ -60,3 +61,14 @@ with tab3:
          axs[math.floor(k / 2), k % 2].set_ylabel(filteredColumns[j])
          k += 1
    st.pyplot(fig)
+
+with tab4:
+   st.write(texts['PCAAbstract'])
+   numOfComp = st.slider('Set number of components:', 1, 20, 2)
+   pca = PCA(n_components=numOfComp)
+   transformed_data = pca.fit_transform(data_basic)
+   explained_variance_ratio = pca.explained_variance_ratio_
+   st.write(explained_variance_ratio)
+
+with tab5:
+   st.write("To add")
