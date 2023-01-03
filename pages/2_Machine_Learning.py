@@ -4,6 +4,7 @@ from default.data_distribution import *
 from default.machine_learning_models import *
 import matplotlib.pyplot as plt
 from default.read_defaults import *
+from sklearn.preprocessing import PolynomialFeatures
 
 with st.sidebar:
     splitPercent = st.slider('Chose percentage of data for test', 0, 100, 20)/100
@@ -21,13 +22,20 @@ with st.sidebar:
       for c in data_basic.columns:
           if(c != 'target'):
             selectedColumns[c] = st.checkbox(c, selectedColumns[c])
+   filteredColumns = [k[0] for k in selectedColumns.items() if (k[1] is True and k[0] != 'target')]
 
-filteredColumns = [k[0] for k in selectedColumns.items() if (k[1] is True and k[0] != 'target')]
+   data_filtered = data_basic[filteredColumns]
 
-data_filtered = data_basic[filteredColumns]
-
-y_basic = data_basic['target']
-X_basic = data_filtered
+   with st.expander('Augmentation'):
+        degree = st.slider('How many new samples', 0, 5, 2)
+        poly = PolynomialFeatures(degree=degree)
+        data_filtered = pd.DataFrame(poly.fit_transform(data_filtered))
+        data_filtered['target'] = data_basic['target']
+        n = st.slider('How many new samples', 0, 300, 20)
+        sampled_data = data_basic.sample(n=n, replace=False)
+        data_filtered.append(sampled_data, ignore_index=True)
+        y_basic = data_filtered['target']
+        X_basic = data_filtered
 
 X_train, X_test, y_train, y_test = splitData(X_basic, y_basic, splitPercent)
 
