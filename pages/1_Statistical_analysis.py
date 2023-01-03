@@ -3,21 +3,27 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import math
 import researchpy as rp
+from sympy.stats.sampling.sample_scipy import scipy
+import statistics
+
 from default.read_defaults import *
 import numpy as np
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import PolynomialFeatures
 
 y_basic = data_basic['target']
+X_basic = data_basic.copy()
+X_basic = X_basic.drop(['target'], axis=1)
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["T-test", "Boxplot", "Scatterplot", "PCA", "Augumentation"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["T-test", "Boxplot", "Correlation", "PCA", "Augumentation"])
 selectedColumns = {}
 
-for c in data_basic.columns:
+for c in X_basic.columns:
    selectedColumns[c] = True
 
 with st.sidebar:
    with st.expander("Select columns"):
-      for c in data_basic.columns:
+      for c in X_basic.columns:
          selectedColumns[c] = st.checkbox(c, selectedColumns[c])
 
 filteredColumns = [k[0] for k in selectedColumns.items() if (k[1] is True)]
@@ -28,10 +34,11 @@ with tab1:
       st.write(texts['t-testAbstract'])
    with col22:
       selectSec = filteredColumns.copy()
-      selectSec.remove('target')
-      select1 = st.selectbox('', set(filteredColumns))
+      select1 = st.selectbox('Select column: ', set(filteredColumns))
+      zeroSide = data_basic[select1][data_basic['target']==0]
+      oneSide = data_basic[select1][data_basic['target']==1]
 
-      summary, results = rp.ttest(data_basic[select1][data_basic['target']==0], data_basic[select1][data_basic['target']==1])
+      summary, results = scipy.stats.ttest_ind(zeroSide, oneSide)
       st.write(summary)
 
 with tab2:
@@ -66,9 +73,20 @@ with tab4:
    st.write(texts['PCAAbstract'])
    numOfComp = st.slider('Set number of components:', 1, 20, 2)
    pca = PCA(n_components=numOfComp)
-   transformed_data = pca.fit_transform(data_basic)
+   transformed_data = pca.fit_transform(X_basic.values)
    explained_variance_ratio = pca.explained_variance_ratio_
    st.write(explained_variance_ratio)
 
 with tab5:
-   st.write("To add")
+   st.write(texts['augmentationAbstract'])
+   with st.expander('Polynominal features'):
+     st.write(texts['polyAbstract'])
+     degree = st.slider('How many new samples', 0, 5, 2)
+     poly = PolynomialFeatures(degree=degree)
+     augmented_data = poly.fit_transform(X_basic.values)
+     st.write(augmented_data)
+   with st.expander('New samples'):
+     n = st.slider('How many new samples', 0, 300, 20)
+     sampled_data = data_basic.sample(n=n, replace=False)
+     st.write(sampled_data)
+     st.write(len(sampled_data))
