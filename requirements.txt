@@ -16,5 +16,6 @@ umap-learn==0.5.3
 wordcloud==1.8.2.2
 researchpy==0.3.5
 sympy
+altair 
 en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0.tar.gz
 cluestar @ git+https://github.com/Buckeyes2019/cluestar_2.git
