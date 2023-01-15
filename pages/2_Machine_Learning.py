@@ -11,7 +11,7 @@ with st.sidebar:
 
     st.write('Type and how much augumentation - to be added')
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(['General', 'Decision tree', 'Naive Bayes', 'Random forest', 'Logistic regression', 'SVM', 'Machine learning on PCA'])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['General', 'Decision tree', 'Naive Bayes', 'Random forest', 'Logistic regression', 'SVM'])
 selectedColumns = {}
 
 for c in data_basic.columns:
@@ -50,8 +50,8 @@ with tab2:
         DT_basic_matrix, DT_basic_acc = getPrediction('Decision tree', X_train, X_test, y_train, y_test)
 
         st.dataframe(DT_basic_matrix)
-        st.write(DT_basic_acc)
-
+        st.markdown("Accuracy is <font color='green'>{perc}%</font>.".format(perc=str(round(DT_basic_acc * 100,2))),
+                    unsafe_allow_html=True)
         labels = 'True negatives', 'False negative', 'False positive', 'True positive'
         sizes = [DT_basic_matrix[0][0], DT_basic_matrix[0][1], DT_basic_matrix[1][0], DT_basic_matrix[1][1]]
         explode = (0.1, 0, 0, 0.1)  # only "explode" the 2nd slice (i.e. 'Hogs')
@@ -71,7 +71,8 @@ with tab3:
         DT_basic_matrix, DT_basic_acc = getPrediction('Naive Bayes', X_train, X_test, y_train, y_test)
 
         st.dataframe(DT_basic_matrix)
-        st.write(DT_basic_acc)
+        st.markdown("Accuracy is <font color='green'>{perc}%</font>.".format(perc=str(round(DT_basic_acc * 100, 2))),
+                    unsafe_allow_html=True)
 
         labels = 'True negatives', 'False negative', 'False positive', 'True positive'
         sizes = [DT_basic_matrix[0][0], DT_basic_matrix[0][1], DT_basic_matrix[1][0], DT_basic_matrix[1][1]]
@@ -92,7 +93,8 @@ with tab4:
         DT_basic_matrix, DT_basic_acc = getPrediction('Random forest', X_train, X_test, y_train, y_test)
 
         st.dataframe(DT_basic_matrix)
-        st.write(DT_basic_acc)
+        st.markdown("Accuracy is <font color='green'>{perc}%</font>.".format(perc=str(round(DT_basic_acc * 100, 2))),
+                    unsafe_allow_html=True)
 
         labels = 'True negatives', 'False negative', 'False positive', 'True positive'
         sizes = [DT_basic_matrix[0][0], DT_basic_matrix[0][1], DT_basic_matrix[1][0], DT_basic_matrix[1][1]]
@@ -113,7 +115,8 @@ with tab5:
         DT_basic_matrix, DT_basic_acc = getPrediction('Logistic regression', X_train, X_test, y_train, y_test)
 
         st.dataframe(DT_basic_matrix)
-        st.write(DT_basic_acc)
+        st.markdown("Accuracy is <font color='green'>{perc}%</font>.".format(perc=str(round(DT_basic_acc * 100, 2))),
+                    unsafe_allow_html=True)
 
         labels = 'True negatives', 'False negative', 'False positive', 'True positive'
         sizes = [DT_basic_matrix[0][0], DT_basic_matrix[0][1], DT_basic_matrix[1][0], DT_basic_matrix[1][1]]
@@ -134,7 +137,8 @@ with tab6:
         DT_basic_matrix, DT_basic_acc = getPrediction('SVM', X_train, X_test, y_train, y_test)
 
         st.dataframe(DT_basic_matrix)
-        st.write(DT_basic_acc)
+        st.markdown("Accuracy is <font color='green'>{perc}%</font>.".format(perc=str(round(DT_basic_acc * 100, 2))),
+                    unsafe_allow_html=True)
 
         labels = 'True negatives', 'False negative', 'False positive', 'True positive'
         sizes = [DT_basic_matrix[0][0], DT_basic_matrix[0][1], DT_basic_matrix[1][0], DT_basic_matrix[1][1]]
@@ -146,6 +150,3 @@ with tab6:
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
         st.pyplot(fig1)
-
-with tab7:
-    st.write('Take two main components so data can be visualised on scatterplot and where it would be divided.')
