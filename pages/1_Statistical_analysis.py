@@ -53,9 +53,9 @@ with tab1:
       oneSide = data_basic[select1][data_basic['target']==1]
 
       t, p = scipy.stats.ttest_ind(zeroSide, oneSide)
-      st.markdown("t-value: <font color='blue'>{t}%</font>".format(t=t), unsafe_allow_html=True)
+      st.markdown("t-value: <font color='blue'>{t}</font>".format(t=t), unsafe_allow_html=True)
       st.markdown("<font color='gray'>The higher the t-value, the greater the difference between the two groups.</font>".format(p=p), unsafe_allow_html=True)
-      st.markdown("p-value: <font color='green'>{p}%</font>".format(p=p), unsafe_allow_html=True)
+      st.markdown("p-value: <font color='green'>{p}</font>".format(p=p), unsafe_allow_html=True)
       if(p < 0.05):
          st.markdown("<font color='red'>There is a statistically significant difference between the two groups.</font>", unsafe_allow_html=True)
       else:
