@@ -46,13 +46,21 @@ with tab1:
    with col21:
       st.write(texts['t-testAbstract'])
    with col22:
+      st.write("We consider two groups of data, those with heart problems and those without heart problems.")
       selectSec = filteredColumns.copy()
       select1 = st.selectbox('Select column: ', set(filteredColumns), key='t-test-slider')
       zeroSide = data_basic[select1][data_basic['target']==0]
       oneSide = data_basic[select1][data_basic['target']==1]
 
-      summary, results = scipy.stats.ttest_ind(zeroSide, oneSide)
-      st.write(summary)
+      t, p = scipy.stats.ttest_ind(zeroSide, oneSide)
+      st.markdown("t-value: <font color='blue'>{t}%</font>".format(t=t), unsafe_allow_html=True)
+      st.markdown("<font color='gray'>The higher the t-value, the greater the difference between the two groups.</font>".format(p=p), unsafe_allow_html=True)
+      st.markdown("p-value: <font color='green'>{p}%</font>".format(p=p), unsafe_allow_html=True)
+      if(p < 0.05):
+         st.markdown("<font color='red'>There is a statistically significant difference between the two groups.</font>", unsafe_allow_html=True)
+      else:
+         st.markdown("<font color='green'>There is no statistically significant difference between the two groups.</font>", unsafe_allow_html=True)
+
 
 with tab2:
    col21, col22 = st.columns(2)
